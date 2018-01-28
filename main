@@ -1,0 +1,50 @@
+from ipywidgets import interactive
+import matplotlib.pyplot as plt
+import numpy as np
+import itertools
+def five(ah = 0, bh = 0, ch = 0, dh = 0, eh = 0, ag1=0, ag2 = 0, bg1=0, bg2 = 0, cg1=0, cg2 = 0, dg1=0, dg2 = 0, eg1=0, eg2=0):
+    from ipywidgets import interactive
+    import matplotlib.pyplot as plt
+    import numpy as np
+    ag = np.array([ag1, ag2])
+    bg = np.array([bg1, bg2])
+    cg = np.array([cg1, cg2])
+    dg = np.array([dg1, dg2])
+    eg = np.array([eg1, eg2])
+    ag.sort()
+    bg.sort()
+    cg.sort()
+    dg.sort()
+    eg.sort()
+    agh = ag*ah
+    bgh = bg*bh
+    cgh = cg*ch
+    dgh = dg*dh
+    egh = eg*eh
+    hours = ah + bh + ch + dh + eh
+    posgpas = []
+    for combo in itertools.product(agh, bgh, cgh, dgh, egh):
+        posgpas.append(sum(combo)/hours)
+    for xy in range(len(posgpas)):
+        posgpas[xy] = round(posgpas[xy],2)
+    gpacount = {}
+    for gpa in posgpas:
+        if gpa not in gpacount:
+            gpacount[gpa] = 0
+            gpacount[gpa] += 1
+        elif gpa in gpacount:
+            gpacount[gpa] += 1
+    gpas = list(gpacount.keys())
+    count = list(gpacount.values())
+    count = np.array(count)
+    sumcount = np.sum(count)
+    for num in range(len(count)):
+        count[num] = count[num]*100/sumcount
+    plt.plot(gpas, count, 'rx')
+    plt.xlabel('Possible GPAs')
+    plt.ylabel('Probability of GPAs (%)')
+    plt.title('Possible GPAs vs Probability of each GPA')
+    plt.show()
+
+interactive_plot = interactive(five, ah = (0,4,1), bh = (0,4,1), ch = (0,4,1), dh = (0,4,1), eh = (0,4,1), ag1 = (0,4,0.3333), ag2 = (0,4,0.3333), bg1 = (0,4,0.3333), bg2 = (0,4,0.3333), cg1 = (0,4,0.3333), cg2 = (0,4,0.3333), dg1 = (0,4,0.3333), dg2 = (0,4,0.3333), eg1 = (0,4,0.3333), eg2 = (0,4,0.3333))
+interactive_plot
